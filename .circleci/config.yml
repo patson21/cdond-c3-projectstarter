@@ -101,22 +101,35 @@ jobs:
       # Restore from cache
       # Your job code here
             
-#   scan-frontend:
-#     docker:
-#       # Docker image here
-#     steps:
-#       # Checkout code from git
-#       # Restore from cache
-#       # Your job code here
+  scan-frontend:
+    docker:
+      - image: circleci/node:13.8.0    # Docker image here
+    steps:
+      - checkout  # Checkout code from git
+      - restore_cache: # Restore from cache
+          keys: [frontend-build] 
+      - run: # Your job code here
+          name: Scan frontend
+          command: 
+            cd frontend
+            npm install
+            # npm install oauth-sign@^0.9.0
+            npm audit --audit-level=critical      
 
-#   scan-backend:
-#     docker:
-#       # Docker image here
-#     steps:
-#       # Checkout code from git
-#       # Restore from cache
-#       # Your job code here
-
+  scan-backend:
+    docker:
+      - image: circleci/node:13.8.0  # Docker image here
+    steps:
+      - checkout # Checkout code from git
+      - restore_cache:
+          keys: [backend-build] # Restore from cache
+      - run: # Your job code here
+          name: Scan backend
+          command:  
+            cd backend
+            npm install
+            # npm install oauth-sign@^0.9.0
+            npm audit --audit-level=critical   
 #   deploy-infrastructure:
 #     docker:
 #       # Docker image here that supports AWS CLI
@@ -294,12 +307,12 @@ workflows:
       - test-backend:
           requires: 
             - build-backend
-      # - scan-backend:
-      #     requires: 
-      #       - build-backend
-      # - scan-frontend:
-      #     requires: 
-      #       - build-frontend
+      - scan-backend:
+          requires: 
+            - build-backend
+      - scan-frontend:
+          requires: 
+            - build-frontend
       # - deploy-infrastructure:
       #     requires: [test-frontend, test-backend, scan-frontend, scan-backend]
       #     filters:
