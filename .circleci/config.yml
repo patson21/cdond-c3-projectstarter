@@ -145,7 +145,7 @@ jobs:
             aws cloudformation deploy \
               --template-file .circleci/files/backend.yml \
               --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
-              #--parameter-overrides IDENT = test \ 
+              --parameter-overrides IDENT="test"  \ 
               --tags project=udapeopletag                
       - run:
           name: Ensure front-end infrastructure exist
@@ -168,7 +168,7 @@ jobs:
           paths:
             - project/.circleci/ansible/inventory.txt
       # Here's where you will add some code to rollback on failure  
-      #- destroy-environment    
+      - destroy-environment    
 
 #   configure-infrastructure:
 #     docker:
