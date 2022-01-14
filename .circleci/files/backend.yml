@@ -5,6 +5,7 @@ Parameters:
   IDENT:
     Description: Unique identifier.
     Type: String
+    Default: test
 
 Resources:
   InstanceSecurityGroup:
