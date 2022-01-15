@@ -174,24 +174,36 @@ jobs:
       # # Here's where you will add some code to rollback on failure  
       - destroy-environment    
 
-#   configure-infrastructure:
-#     docker:
-#       # Docker image here that supports Ansible
-#     steps:
-#       # Checkout code from git
-#       # Add ssh keys with fingerprint
-#       # attach workspace
-#       - run:
-#           name: Install dependencies
-#           command: |
-#             # Your code here
-#             exit 1
-#       - run:
-#           name: Configure server
-#           command: |
-#             # Your code here
-#             exit 1
-#       # Here's where you will add some code to rollback on failure      
+  configure-infrastructure:
+    docker:
+      - image: python:3.7-alpine3.11 #Docker image here that supports Ansible
+    steps:
+      - checkout # Checkout code from git
+      - add_ssh_keys:
+              # You can get this ID in the section where you registered the SSH Key
+              fingerprints: ["91:9d:5f:d1:f6:95:d9:7b:c6:4c:1c:1e:6f:f9:bb:fc"] 
+      # Add ssh keys with fingerprint
+      - run:
+          name: Install Ansible
+          command: |
+            apk add --update ansible
+      # attach workspace
+      # - attach_workspace:
+      #     at: ~/
+      # - run: cat project/.circleci/ansible/inventory.txt
+      - run:
+          name: Install dependencies
+          command: |
+            # Your code here
+            apk add tar #apk add --no-cache tar
+            apk add gzip
+            # exit 1
+      # - run:
+      #     name: Configure server
+      #     command: |
+      #       # Your code here
+      #       exit 1
+      # Here's where you will add some code to rollback on failure      
 
 #   run-migrations:
 #     docker:
@@ -323,12 +335,12 @@ workflows:
       # - scan-frontend:
       #     requires: 
       #       - build-frontend
-      - deploy-infrastructure
+      #- deploy-infrastructure
       #     requires: [test-frontend, test-backend, scan-frontend, scan-backend]
       #     filters:
       #       branches:
       #         only: [test-feature-branch]
-      # - configure-infrastructure:
+       - configure-infrastructure
       #     requires: [deploy-infrastructure]
       # - run-migrations:
       #     requires: [configure-infrastructure]
