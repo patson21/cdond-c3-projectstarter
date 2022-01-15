@@ -163,11 +163,11 @@ jobs:
       - run:
           name: Add back-end ip to ansible inventory
           command: |
-            echo "[all]" > inventory.txt
+            #echo "[all]" > inventory.txt
             aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --output text >> inventory.txt
-            cat ~/project/inventory.txt
+              --output text >> ~/project/.circleci/ansible/inventory.txt
+            cat ~/project/.circleci/ansible/inventory.txt
       - persist_to_workspace:
           root: ~/
           paths:
@@ -192,7 +192,7 @@ jobs:
       - attach_workspace:
           at: ~/
       - run: pwd
-      - run: cat ~/project/inventory.txt
+      - run: cat ~/project/.circleci/ansible/inventory.txt
       - run:
           name: Install dependencies
           command: |
@@ -203,9 +203,10 @@ jobs:
       # - run:
       #     name: Configure server
       #     command: |
-      #       # Your code here
-      #       exit 1
-      # Here's where you will add some code to rollback on failure      
+      #         cd .circleci/ansible
+      #         ansible-playbook -i inventory.txt configure-server.yml
+      # # Here's where you will add some code to rollback on failure 
+      # - destroy-environment     
 
 #   run-migrations:
 #     docker:
