@@ -190,7 +190,8 @@ jobs:
       # attach workspace
       - attach_workspace:
           at: ~/
-      - run: cat project/.circleci/ansible/inventory.txt
+      - run: pwd
+      - run: cat ~/project/.circleci/ansible/inventory.txt
       - run:
           name: Install dependencies
           command: |
