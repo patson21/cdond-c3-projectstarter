@@ -212,25 +212,25 @@ jobs:
 
   run-migrations:
     docker:
-      - image: cimg/node:16.13.1 #circleci/node:14.18.1 # Docker image here that supports NodeJS
+      - image: circleci/node:13.8.0 # Docker image here that supports NodeJS
     steps:
       - checkout # Checkout code from git
       - restore_cache:
           keys: [backend-build] 
-      - run: 
-          name: Install nvm
-          command: |
-            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash         
+      # - run: 
+      #     name: Install nvm
+      #     command: |
+      #       curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash         
       - run:
           name: Run migrations
           command: |
             # Your code here
             cd backend
             echo "start"
-            export NVM_DIR="$HOME/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            # export NVM_DIR="$HOME/.nvm"
+            # [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             echo "test"
-            nvm install v13.8.0
+            # nvm install v13.8.0
             npm install
             #npm audit fix
             #npm audit fix --force
@@ -367,8 +367,8 @@ workflows:
       #         only: [test-feature-branch]
       # - configure-infrastructure:
       #      requires: [deploy-infrastructure]
-      - run-migrations #:
-      #    requires: [configure-infrastructure]
+      - run-migrations:
+          requires: [scan-backend] #[configure-infrastructure]
       # - deploy-frontend:
       #     requires: [run-migrations]
       # - deploy-backend:
