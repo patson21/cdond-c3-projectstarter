@@ -247,6 +247,7 @@ jobs:
             echo "start"
             cat .env
             source .env
+            echo $TYPEORM_MIGRATIONS
             # export NVM_DIR="$HOME/.nvm"
             # [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             # nvm install v13.8.0
