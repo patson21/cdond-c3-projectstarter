@@ -161,7 +161,6 @@ jobs:
               --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
             #  --tags project=udapeopletag                 
-            #  exit 1
       - run:
           name: Add back-end ip to ansible inventory
           command: |
@@ -199,7 +198,7 @@ jobs:
           name: Install dependencies
           command: |
             # Your code here
-            apk add tar #apk add --no-cache tar
+            apk add tar 
             apk add gzip
             # exit 1
       - run:
@@ -232,31 +231,50 @@ jobs:
             then
               #curl -H "Content-Type: text/plain" -H "token: 7933fe63-4687-4fa1-8426-aa25aa1730ec" --request PUT --data "1" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:7}
               curl --insecure https://kvdb.io/PWqkBPkGk8CszbNojzMmPb/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
-              echo "in if schleddife"
+              echo "in if loop"
             fi
       - revert-migrations
      # Here's where you will add some code to rollback on failure      
      #- destroy-environment 
-#   deploy-frontend:
-#     docker:
-#       # Docker image here that supports AWS CLI
-#     steps:
-#       # Checkout code from git
-#       - run:
-#           name: Install dependencies
-#           command: |
-#             # your code here
-#       - run:
-#           name: Get backend url
-#           command: |
-#             # your code here
-#             export API_URL="http://${BACKEND_IP}:3030"
-#             echo "${API_URL}"
-#       - run:
-#           name: Deploy frontend objects
-#           command: |
-#             # your code here
-#       # Here's where you will add some code to rollback on failure      
+  deploy-frontend:
+    docker:
+      - image: amazon/aws-cli # Docker image here that supports AWS CLI
+    steps:
+      - checkout # Checkout code from git
+      - restore_cache:
+          keys: [frontend-build] 
+      - run:
+          name: Install tar utility
+          command: |
+            yum install -y tar gzip
+      - run:
+          name: Install dependencies
+          command: |
+            which npm
+            which node 
+            # your code here
+      - run:
+          name: Get backend url
+          command: |
+            # your code here
+            export BACKEND_IP=$(aws ec2 describe-instances \
+              --query 'Reservations[*].Instances[*].PublicIpAddress' \
+              --output text)
+            export API_URL="http://${BACKEND_IP}:3030"
+            echo "API_URL = ${API_URL}"
+            echo API_URL="http://${BACKEND_IP}:3030" >> frontend/.env
+            cat frontend/.env
+            export API_URL="http://${BACKEND_IP}:3030"
+            echo "${API_URL}"
+      - run:
+          name: Deploy frontend objects
+          command: |
+            cd frontend
+            npm install
+            npm run build
+            tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
+            aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+      # Here's where you will add some code to rollback on failure      
                     
 #   deploy-backend:
 #     docker:
