@@ -26,10 +26,9 @@ commands:
             SUCCESS = 1
             if(( $SUCCESS==1 )); 
             then
-            #  cd ~/project/backend
-            #  npm install
-            #  Add revert code here. You can find this in the Getting Started section.
-              exit 1
+            cd ~/backend
+            npm install
+            npm run migrations:revert
             fi
             
 jobs:
@@ -234,6 +233,7 @@ jobs:
               #curl https://kvdb.io/[PWqkBPkGk8CszbNojzMmPb]/[migration_${CIRCLE_WORKFLOW_ID:0:7}]  -d '1'
               echo "in if schleife"
             fi
+      - revert-migrations
      # Here's where you will add some code to rollback on failure      
      #- destroy-environment 
 #   deploy-frontend:
