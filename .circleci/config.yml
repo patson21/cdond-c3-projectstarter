@@ -231,7 +231,7 @@ jobs:
             # [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             # nvm install v13.8.0
             npm install
-            #npm audit fix
+            #npm audit llfix
             #npm audit fix --force
             # Rnun and sve the migration output
             echo "nach npm install"
