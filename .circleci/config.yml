@@ -250,8 +250,8 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            node --version
-            npm --version
+            #node --version
+            #npm --version
             curl -sL https://rpm.nodesource.com/setup_10.x | sudo bash -
             sudo yum install -y nodejs
             node --version
@@ -378,10 +378,10 @@ workflows:
       #     filters:
       #       branches:
       #         only: [test-feature-branch]
-      # - configure-infrastructure:
+       - configure-infrastructure:
       #      requires: [deploy-infrastructure]
       - run-migrations:
-          requires: [scan-backend] #[configure-infrastructure]
+          requires: [scan-backend] [configure-infrastructure]
       - deploy-frontend:
           requires: [run-migrations]
       # - deploy-backend:
