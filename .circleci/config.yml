@@ -212,7 +212,7 @@ jobs:
 
   run-migrations:
     docker:
-      - image: circleci/node:13.8.0 # Docker image here that supports NodeJS
+      - image: cimg/node:16.13.1 #circleci/node:13.8.0 # Docker image here that supports NodeJS
     steps:
       - checkout # Checkout code from git
       - restore_cache:
@@ -232,7 +232,7 @@ jobs:
             # nvm install v13.8.0
             npm install
             #npm audit llfix
-            npm audit fix --force
+            #npm audit fix --force
             # Rnun and sve the migration output
             echo "nach npm install"
             npm run migrations > migrations_dump.txt
