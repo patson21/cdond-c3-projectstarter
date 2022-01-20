@@ -212,7 +212,7 @@ jobs:
 
   run-migrations:
     docker:
-      - image: circleci/node:14.8.1 # Docker image here that supports NodeJS
+      - image: circleci/node:14.18.1 # Docker image here that supports NodeJS
     steps:
       - checkout # Checkout code from git
       - restore_cache:
@@ -244,6 +244,7 @@ jobs:
             then
               #curl -H "Content-Type: text/plain" -H "token: 7933fe63-4687-4fa1-8426-aa25aa1730ec" --request PUT --data "1" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:7}
               curl https://kvdb.io/[PWqkBPkGk8CszbNojzMmPb]/[migration_${CIRCLE_WORKFLOW_ID:0:7}]  -d '1'
+              echo "in if schleife"
             fi
      # Here's where you will add some code to rollback on failure      
      #- destroy-environment 
