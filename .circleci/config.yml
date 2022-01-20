@@ -212,7 +212,7 @@ jobs:
 
   run-migrations:
     docker:
-      - image: circleci/node:14.18.1 #circleci/node:13.8.0 # Docker image here that supports NodeJS
+      - image: circleci/node:13.8.0 # Docker image here that supports NodeJS
     steps:
       - checkout # Checkout code from git
       - restore_cache:
@@ -225,7 +225,7 @@ jobs:
           name: enviroments
           command: |
             cd  backend
-            touch .env
+            #touch .env
             # #echo ENVIROMENT=production > .env
             # #echo NODE_ENV=production >> ".env"
             # echo TYPEORM_CONNECTION=postgres > .env
@@ -246,9 +246,9 @@ jobs:
             # Your code here
             cd backend
             echo "start"
-            cat .env
-            source .env
-            echo $TYPEORM_MIGRATIONS
+            #cat .env
+            #source .env
+            echo $TYPEORM_HOST
             # export NVM_DIR="$HOME/.nvm"
             # [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             # nvm install v13.8.0
