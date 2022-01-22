@@ -252,7 +252,7 @@ jobs:
           command: |
             #node --version
             #npm --version
-            curl -sL https://rpm.nodesource.com/setup_10.x | sudo bash -
+            curl -sL https://rpm.nodesource.com/setup_10.x | bash -
             yum install -y nodejs
             node --version
             npm --version
