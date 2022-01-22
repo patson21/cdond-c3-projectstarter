@@ -10,6 +10,7 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
+            aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
             aws cloudformation delete-stack --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7} # Your code here
             aws cloudformation delete-stack --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7} # exit 1
 
@@ -301,6 +302,11 @@ jobs:
           command: |
             apk add --update ansible
       - run:
+          name: Install aws cli
+          command: |
+            pip install awscli
+            aws --version
+      - run:
           name: Deploy backend
           command: |
             cd backend
@@ -309,6 +315,8 @@ jobs:
             cd ..
             # Zip the directory
             tar -C backend -czvf artifact.tar.gz .
+            pwd
+            ls
             cd .circleci/ansible
             echo "Contents  of the inventory.txt file is -------"
             cat inventory.txt
