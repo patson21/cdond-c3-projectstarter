@@ -27,7 +27,6 @@ commands:
           command: |
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
             export SUCCESS=1
-            echo $SUCCESS
             #if(( curl --insecure  https://kvdb.io/PWqkBPkGk8CszbNojzMmPb/migration_${CIRCLE_WORKFLOW_ID:0:7} )); 
             if [[ $SUCCESS == 1 ]];
             then
@@ -348,10 +347,15 @@ jobs:
               export BACKEND_IP=$(aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text)
+              echo $BACKEND_IP
       - run:
           name: Backend smoke test.
           command: |
             # Fetch and prepare the BACKEND_IP env var
+            export BACKEND_IP=$(aws ec2 describe-instances \
+            --query 'Reservations[*].Instances[*].PublicIpAddress' \
+            --output text)
+            echo $BACKEND_IP
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
             if curl "${API_URL}/api/status" | grep "ok"
