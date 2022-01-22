@@ -11,7 +11,7 @@ commands:
           when: on_fail
           command: |
             aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
-            sleep 10
+            sleep 20
             #aws s3 rb s3://bucket-name --force  
             aws cloudformation delete-stack --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7} # Your code here
             aws cloudformation delete-stack --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7} # exit 1
@@ -339,6 +339,7 @@ jobs:
           command: |
             apk add --update nodejs npm
             pip install awscli
+            echo "curl Überprüfung"
             curl --version       
       - run:
           name: Get backend url
