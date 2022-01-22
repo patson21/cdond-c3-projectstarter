@@ -15,3 +15,5 @@
     cd /home/ubuntu/backend 
     pm2 stop backend
     pm2 start npm --name "backend" -- start
+    cd dist
+    pm2 start main.js --update-env
