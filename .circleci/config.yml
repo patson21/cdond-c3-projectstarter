@@ -29,7 +29,7 @@ commands:
             export SUCCESS=1
             echo $SUCCESS
             #if(( curl --insecure  https://kvdb.io/PWqkBPkGk8CszbNojzMmPb/migration_${CIRCLE_WORKFLOW_ID:0:7} )); 
-            if(( $SUCCESS=="1" ));
+            if[$SUCCESS==1];
             then
             cd backend
             npm install
@@ -340,7 +340,7 @@ jobs:
             apk add --update nodejs npm
             pip install awscli
             echo "curl Überprüfung"
-            pip install pycurl
+            apk add --update curl
             curl --version       
       - run:
           name: Get backend url
