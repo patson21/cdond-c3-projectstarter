@@ -322,24 +322,18 @@ jobs:
             echo "TYPEORM_MIGRATIONS = ${TYPEORM_MIGRATIONS}" >> ~/project/backend/.env
             echo "TYPEORM_MIGRATIONS_DIR = ${TYPEORM_MIGRATIONS_DIR}" >> ~/project/backend/.env
             cd backend
-            cat .env
-            ls
             npm i
+            # Build backend together with TYPEORM environment variables above
             npm run build
-            # cp package* ./dist
-            echo "nach npm run build"
-            ls
             cd ..
-            # Zip the directory
+            # Zip the backend directory
             tar -C backend -czvf artifact.tar.gz .
-            echo "nach tar command"
+            # Copy zip file to ansible folder
             cp artifact.tar.gz .circleci/ansible 
-            # echo "Wechsel nach .circleci/ansible"
-            echo "nach cp command"
             cd .circleci/ansible
-            ls
             echo "Contents  of the inventory.txt file is -------"
-            # cat inventory.txt
+            cat inventory.txt
+            # Run deploy-backend playbook 
             ansible-playbook -i inventory.txt deploy-backend.yml 
       # Here's where you will add some code to rollback on failure
       - destroy-environment
