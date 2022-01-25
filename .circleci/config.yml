@@ -372,7 +372,7 @@ jobs:
             echo "${API_URL}"
             if curl "${API_URL}/api/status" | grep "ok"
             then
-                return 1
+                return 0
             else
                 return 1
             fi
@@ -391,20 +391,27 @@ jobs:
       - destroy-environment
       - revert-migrations # Here's where you will add some code to rollback on failure  
 
-#   cloudfront-update:
-#     docker:
-#       # Docker image here that supports AWS CLI
-#     steps:
-#       # Checkout code from git
-#       - run:
-#           name: Install dependencies
-#           command: |
-#             # your code here
-#       - run:
-#           name: Update cloudfront distribution
-#           command: |
-#             # your code here
-#       # Here's where you will add some code to rollback on failure  
+  cloudfront-update:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout # Checkout code from git
+      - run:
+          name: Install dependencies
+          command: |
+            # your code here
+      - run:
+          name: Update cloudfront distribution
+          command: |
+            # Change the initial stack name, as applicable to you
+            aws cloudformation deploy \
+            --template-file .circleci/files/cloudfront.yml \
+            --stack-name InitialStack \
+            --parameter-overrides WorkflowID="udapeople-${CIRCLE_WORKFLOW_ID:0:7}"
+            #--tags project=udapeople
+            # your code here
+      - destroy-environment
+      # Here's where you will add some code to rollback on failure  
 
 # cleanup:
 #     docker:
