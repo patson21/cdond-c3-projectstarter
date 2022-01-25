@@ -34,8 +34,8 @@
     echo "TYPEORM_DATABASE={{ lookup('env', 'TYPEORM_DATABASE')}}" >> /home/ubuntu/.env
     echo "TYPEORM_MIGRATIONS={{ lookup('env', 'TYPEORM_MIGRATIONS')}}" >> /home/ubuntu/.env
     echo "TYPEORM_MIGRATIONS_DIR={{ lookup('env', 'TYPEORM_MIGRATIONS_DIR')}}" >> /home/ubuntu/.env
-    source .env
-    echo TYPEORM_PASSWORD
+    # source .env
+    # echo TYPEORM_PASSWORD
 
 - name: "install pm2"
   shell: npm install pm2 -g

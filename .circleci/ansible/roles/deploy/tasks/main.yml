@@ -9,6 +9,7 @@
     src: artifact.tar.gz
     dest: /home/ubuntu/backend
 
+
 # - name: Start Application
 #   shell: |
 #     npm install
