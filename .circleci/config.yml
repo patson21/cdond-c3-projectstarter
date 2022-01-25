@@ -282,7 +282,8 @@ jobs:
             tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
             aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
       # Here's where you will add some code to rollback on failure   
-      - destroy-environment   
+      - destroy-environment
+      # - revert-migrations   
                     
   deploy-backend:
     docker:
@@ -383,11 +384,12 @@ jobs:
             if curl -s ${URL} | grep "Welcome"
             then
               # Change this to 0 after the job fails
-              return 1
+              return 0
             else
               return 1
             fi
-      #- destroy-environment # Here's where you will add some code to rollback on failure  
+      - destroy-environment
+      - revert-migrations # Here's where you will add some code to rollback on failure  
 
 #   cloudfront-update:
 #     docker:
@@ -448,8 +450,9 @@ workflows:
       #         only: [test-feature-branch]
       - configure-infrastructure:
           requires: [deploy-infrastructure]
-      # - run-migrations:
-      #     requires: [scan-backend, configure-infrastructure]
+      - run-migrations:
+          requires: [configure-infrastructure]
+          #requires: [scan-backend, configure-infrastructure]
       - deploy-frontend:
           requires: [configure-infrastructure]
       #    requires: [run-migrations]
