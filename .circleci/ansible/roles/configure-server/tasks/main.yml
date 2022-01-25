@@ -1,4 +1,11 @@
 ---
+- name: "Install python"
+  become: true
+  apt:
+    name: python3
+    state: latest
+    update_cache: "yes"
+
 - name: "update apt packages."
   become: yes
   apt:
@@ -16,12 +23,8 @@
     state: present
     update_cache: yes
 
-- name: "Install python"
-  become: true
-  apt:
-    name: python3
-    state: latest
-    update_cache: "yes"
+- name: "install pm2"
+  shell: npm install pm2 -g
 
 - name: "Set environment variables"
   shell: | 
@@ -37,5 +40,4 @@
     # source .env
     # echo TYPEORM_PASSWORD
 
-- name: "install pm2"
-  shell: npm install pm2 -g
+
