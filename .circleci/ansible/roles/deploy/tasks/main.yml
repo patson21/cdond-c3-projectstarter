@@ -9,7 +9,6 @@
     src: artifact.tar.gz
     dest: /home/ubuntu/backend
 
-
 - name: Start Application
   shell: |
     cd /home/ubuntu/backend 
