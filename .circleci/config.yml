@@ -328,11 +328,14 @@ jobs:
             npm run build
             # cp package* ./dist
             echo "nach npm run build"
+            ls
             cd ..
             # Zip the directory
             tar -C backend -czvf artifact.tar.gz .
+            echo "nach tar command"
             cp artifact.tar.gz .circleci/ansible 
             # echo "Wechsel nach .circleci/ansible"
+            echo "nach cp command"
             cd .circleci/ansible
             ls
             echo "Contents  of the inventory.txt file is -------"
