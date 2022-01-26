@@ -352,22 +352,28 @@ jobs:
             pip install awscli
             echo "curl Überprüfung"
             apk add --update curl
-            curl --version       
+            curl --version
+      - attach_workspace:
+          at: ~/
+      - run: cat ~/project/.circleci/ansible/inventory.txt             
       - run:
           name: Get backend url
           command: |
-              export BACKEND_IP=$(aws ec2 describe-instances \
+              export BACKEND_IP2=$(aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text)
-              echo $BACKEND_IP
+              echo $BACKEND_IP2
       - run:
           name: Backend smoke test.
           command: |
             # Fetch and prepare the BACKEND_IP env var
-            export BACKEND_IP=$(aws ec2 describe-instances \
-            --query 'Reservations[*].Instances[*].PublicIpAddress' \
-            --output text)
-            echo $BACKEND_IP
+            # export BACKEND_IP=$(aws ec2 describe-instances \
+            # --query 'Reservations[*].Instances[*].PublicIpAddress' \
+            # --output text)
+            # echo $BACKEND_IP
+            echo INVENTORY_FILE:
+            cat ~/project/.circleci/ansible/inventory.txt   
+            export BACKEND_IP=$(tail -1 ~/project/.circleci/ansible/inventory.txt)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
             if curl "${API_URL}/api/status" | grep "ok"
