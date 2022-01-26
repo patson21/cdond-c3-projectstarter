@@ -413,9 +413,11 @@ jobs:
                     list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
                     --no-paginate --output text >>old_id.txt
             cat old_id.txt
-      - save_cache:
-          paths: [old_id.txt]
-          key: old-id
+            ls
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/old_id.txt
       - run:
           name: Update cloudfront distribution
           command: |
@@ -434,8 +436,8 @@ jobs:
       - image: amazon/aws-cli # Docker image here
     steps:
       - checkout # Checkout code from git
-      - restore_cache:
-          keys: [old-id]
+      - attach_workspace:
+          at: ~/
       - run:
           name: Get old stack workflow id
           command: |
