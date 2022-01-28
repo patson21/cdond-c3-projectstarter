@@ -285,11 +285,12 @@ jobs:
           command: |
             cd frontend
             echo "VERIFY .env FILE IS AVAILABLE"
-            ls
+            ls -a
             npm install
             echo "RUN BUILD"
             npm run build
             echo "RUN BUILD FERTIG"
+            ls -a
             tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
             aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
       # Here's where you will add some code to rollback on failure   
