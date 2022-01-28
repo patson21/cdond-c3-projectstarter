@@ -225,14 +225,15 @@ jobs:
             # Your code here
             cd backend
             npm install
+            echo "RUN MIGRATIONS"
             npm run migrations > migrations_dump.txt
+            echo "RUN MIGRATIONS COMPLETED"
       - run:
           name: Send migration results to memstash
           command: |
             cat ~/project/backend/migrations_dump.txt
             if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
             then
-              #curl -H "Content-Type: text/plain" -H "token: 7933fe63-4687-4fa1-8426-aa25aa1730ec" --request PUT --data "1" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:7}
               curl --insecure https://kvdb.io/PWqkBPkGk8CszbNojzMmPb/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
               echo "in if loop"
             fi
@@ -259,7 +260,6 @@ jobs:
             yum install -y nodejs
             node --version
             npm --version
-            # your code here
       - attach_workspace:
           at: ~/
       - run: cat ~/project/.circleci/ansible/inventory.txt # attach workspace
@@ -276,6 +276,7 @@ jobs:
             echo API_URL="http://${BACKEND_IP}:3030" >> frontend/.env
             # echo ENVIRONMENT=production  >> "frontend/.env"  #new 
             echo NODE_ENV=production >> "frontend/.env"      #new
+            echo "FRONTEEND ENVIRONMEN"
             cat frontend/.env
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
@@ -283,8 +284,12 @@ jobs:
           name: Deploy frontend objects
           command: |
             cd frontend
+            echo "VERIFY .env FILE IS AVAILABLE"
+            ls
             npm install
+            echo "RUN BUILD"
             npm run build
+            echo "RUN BUILD FERTIG"
             tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
             aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
       # Here's where you will add some code to rollback on failure   
@@ -332,6 +337,8 @@ jobs:
             npm i
             # Build backend together with TYPEORM environment variables above
             npm run build
+            echo "AFTER NOM RUN BUILD"
+            ls
             cd ..
             # Zip the backend directory
             tar -C backend -czvf artifact.tar.gz .
