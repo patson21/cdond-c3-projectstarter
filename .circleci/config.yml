@@ -505,7 +505,7 @@ workflows:
           requires: [configure-infrastructure]
           #requires: [scan-backend, configure-infrastructure]
       - deploy-frontend:
-          requires: [configure-infrastructure, run migrations]
+          requires: [configure-infrastructure, run-migrations]
           #requires: [run-migrations]
       - deploy-backend:
           requires: [configure-infrastructure, run-migrations]
