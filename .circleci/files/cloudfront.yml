@@ -8,7 +8,6 @@ Parameters:
 
 
 Resources:
-  
   CloudFrontOriginAccessIdentity:
     Type: "AWS::CloudFront::CloudFrontOriginAccessIdentity"
     Properties:
@@ -34,6 +33,9 @@ Resources:
           ForwardedValues:
             QueryString: False
           TargetOriginId: webpage
+          MaxTTL: 180
+          MinTTL: 10
+          DefaultTTL: 120
           ViewerProtocolPolicy: allow-all
 
 Outputs:
