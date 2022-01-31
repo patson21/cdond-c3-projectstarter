@@ -33,7 +33,7 @@ Resources:
           ForwardedValues:
             QueryString: False
           TargetOriginId: webpage
-          MaxTTL: 180
+          MaxTTL: 200
           MinTTL: 0
           DefaultTTL: 120
           ViewerProtocolPolicy: allow-all
