@@ -33,9 +33,9 @@ Resources:
           ForwardedValues:
             QueryString: False
           TargetOriginId: webpage
-          MaxTTL: 120
-          MinTTL: 0
-          DefaultTTL: 120
+          # MaxTTL: 120
+          # MinTTL: 0
+          # DefaultTTL: 120
           ViewerProtocolPolicy: allow-all
 
 Outputs:
