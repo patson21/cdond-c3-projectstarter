@@ -443,8 +443,7 @@ jobs:
             --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}"
             #--tags project=udapeople
             # your code here
-      - destroy-environment
-      # Here's where you will add ssdome code to rollback on failure  
+      - destroy-environment 
 
   cleanup:
     docker:
