@@ -23,7 +23,7 @@ commands:
     steps:
       - run:
           name: Revert migrations
-          # Add when this will run
+          when: on_fail # Add when this will run
           command: |
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
             export SUCCESS=1
@@ -102,9 +102,6 @@ jobs:
             cd backend
             npm install
             npm run test
-      # Checkout code from git
-      # Restore from cache
-      # Your job code here
             
   scan-frontend:
     docker:
@@ -239,7 +236,7 @@ jobs:
               curl --insecure https://kvdb.io/PWqkBPkGk8CszbNojzMmPb/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
               echo "in if loop"
             fi
-     #- revert-migrations
+      - revert-migrations
      # Here's where you will add some code to rollback on failure      
      #- destroy-environment 
   deploy-frontend:
@@ -411,7 +408,7 @@ jobs:
               return 1
             fi
       - destroy-environment
-      #- revert-migrations # Here's where you will add some code to rollback on failure  
+      #- revert-migrations   
 
   cloudfront-update:
     docker:
@@ -481,25 +478,25 @@ jobs:
 workflows:
   default:
     jobs:
-      # - build-frontend
-      # - build-backend
-      # - test-frontend:
-      #     requires: 
-      #       - build-frontend
-      # - test-backend:
-      #     requires: 
-      #       - build-backend
-      # - scan-backend:
-      #     requires: 
-      #       - build-backend
-      # - scan-frontend:
-      #     requires: 
-      #       - build-frontend
-      - deploy-infrastructure
-          # requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-          # filters:
-          #   branches:
-          #     only: [master]
+      - build-frontend
+      - build-backend
+      - test-frontend:
+          requires: 
+            - build-frontend
+      - test-backend:
+          requires: 
+            - build-backend
+      - scan-backend:
+          requires: 
+            - build-backend
+      - scan-frontend:
+          requires: 
+            - build-frontend
+      - deploy-infrastructure:
+          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+          filters:
+            branches:
+              only: [master]
       - configure-infrastructure:
           requires: [deploy-infrastructure]
       - run-migrations:
